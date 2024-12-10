@@ -3,4 +3,4 @@ workflows:
   - subclass: WDL
     primaryDescriptorPath: /pacbio_anvil.wdl
     testParameterFiles:
-      - test.json
+      - /test.json
