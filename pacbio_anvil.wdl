@@ -7,9 +7,10 @@ workflow Test {
         script=script
     }
   }
+}
 
 
-  task GET_FILEPATHS{
+task GET_FILEPATHS{
     input {
         File script
     }
@@ -22,4 +23,4 @@ workflow Test {
     runtime{
         docker: "us.gcr.io/broad-dsp-gcr-public/terra-jupyter-python:1.1.5"
     }
-  }
+}
