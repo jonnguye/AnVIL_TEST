@@ -1,7 +1,8 @@
 version 1.0
 
 workflow Test {
-  File script 
+  File script
+
   call GET_FILEPATHS{
     input:
         script=script
