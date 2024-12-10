@@ -3,9 +3,8 @@ version 1.0
 workflow Test {
   File script 
   call GET_FILEPATHS {
-    input {
+    input :
         script=script
-    }
   }
 }
 
