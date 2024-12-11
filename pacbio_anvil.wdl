@@ -13,7 +13,6 @@ workflow Test {
         script=script,
         workspace_name=workspace_name,
         workspace_namespace=workspace_namespace,
-        workspace_bucket=workspace_bucket
   }
 }
 
@@ -21,9 +20,11 @@ workflow Test {
 task GET_FILEPATHS{
     input {
         File script
+        String workspace_name
+        String workspace_namespace
     }
     command {
-        python ${script}
+        python ${script} -p ${workspace_name} -w ${workspace_namespace}
     }
     output {
         File pacbio_affected_list = "pacbio_affected_filelist.tsv"
