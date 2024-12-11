@@ -5,7 +5,6 @@ workflow Test {
     File script
     String workspace_name
     String workspace_namespace
-    String workspace_bucket
   }
 
   call GET_FILEPATHS{
