@@ -7,11 +7,19 @@ import pprint
 import json
 from google.cloud import storage
 import os
+import argparse
 
+print(os.environ)
 
-BILLING_PROJECT_ID = os.environ['WORKSPACE_NAMESPACE']
-WORKSPACE = os.environ['WORKSPACE_NAME']
-bucket = os.environ['WORKSPACE_BUCKET']
+parser = argparse.ArgumentParser()
+
+parser.add_argument('-p', '--project')
+parser.add_argument('-w', '--workspace')
+
+args = parser.parse_args()
+
+BILLING_PROJECT_ID = args.project 
+WORKSPACE = args.workspace
 
 keys = json.loads(fiss.fapi.list_entity_types(BILLING_PROJECT_ID,WORKSPACE).text).keys()
 

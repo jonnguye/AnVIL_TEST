@@ -3,11 +3,17 @@ version 1.0
 workflow Test {
   input {
     File script
+    String workspace_name
+    String workspace_namespace
+    String workspace_bucket
   }
 
   call GET_FILEPATHS{
     input:
-        script=script
+        script=script,
+        workspace_name=workspace_name,
+        workspace_namespace=workspace_namespace,
+        workspace_bucket=workspace_bucket
   }
 }
 

@@ -1,3 +1,5 @@
 {
-    "Test.script": "pacbio_anvil.py"
+    "Test.script": "pacbio_anvil.py",
+    "Test.workspace_name":"WORKSPACE_NAME",
+    "Test.workspace_namespace":"anvil-datastorage"
 }
