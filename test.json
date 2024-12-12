@@ -1,5 +1,6 @@
 {
-    "Test.script": "pacbio_anvil.py",
+    "Test.table_names":["tables"],
+    "Test.model_url":"url",
     "Test.workspace_name":"WORKSPACE_NAME",
     "Test.workspace_namespace":"anvil-datastorage"
 }
