@@ -15,6 +15,32 @@ workflow Test {
         workspace_name=workspace_name,
         workspace_namespace=workspace_namespace,
   }
+
+  call parse_tsv {
+    input:
+        aligned_nanopore=export_tables.aligned_nanopore
+  }
+}
+
+task parse_tsv {
+    input {
+        File aligned_nanopore 
+    }
+
+    command {
+    python <<CODE
+    import pandas as pd
+    df = pd.read_csv(${aligned_nanopore},sep="\t")
+    df.to_json("nanopore.json",orient="records")
+    CODE
+    }
+
+    output {
+        File nanopore_json = "nanopore.json"
+    }
+    runtime {
+        docker: "quay.io/biocontainers/pandas:2.2.1"
+    }
 }
 
 task export_tables {
@@ -41,6 +67,7 @@ task export_tables {
 
     output {
         Array[File] tables = glob("*.tsv")
+        File aligned_nanopore = "aligned_nanopore.tsv"
     }
 
     runtime {
