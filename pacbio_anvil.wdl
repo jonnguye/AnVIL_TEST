@@ -30,7 +30,7 @@ task parse_tsv {
     command {
     python <<CODE
     import pandas as pd
-    df = pd.read_csv(${aligned_nanopore},sep="\t")
+    df = pd.read_csv("${aligned_nanopore}",sep="\t")
     df.to_json("nanopore.json",orient="records")
     CODE
     }
