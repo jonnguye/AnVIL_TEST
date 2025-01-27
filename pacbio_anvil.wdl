@@ -6,7 +6,6 @@ workflow Test {
     String model_url
     String workspace_name
     String workspace_namespace
-    String out_prefix
   }
 
   call export_tables{
@@ -19,14 +18,13 @@ workflow Test {
 
   call parse_tsv {
     input:
-        aligned_nanopore=export_tables.aligned_nanopore
+        table_names=table_names
   }
 }
 
 task parse_tsv {
     input {
         Array[String] table_names
-        String out_prefix
     }
 
     command <<<
@@ -43,7 +41,7 @@ task parse_tsv {
     >>>
 
     output {
-        File out_json = "~{out_prefix}.json"
+        Array[File] out_json = glob("*.json") 
     }
     runtime {
         docker: "quay.io/biocontainers/pandas:2.2.1"
