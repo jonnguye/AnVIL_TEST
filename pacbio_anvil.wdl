@@ -30,7 +30,7 @@ task parse_tsv {
     }
 
     command <<<
-    printf ~{sep="\n", table_names} > table_names.txt
+    printf ~{sep="\n" table_names} > table_names.txt
     python <<CODE
     import pandas as pd
     with open(table_names.txt) as infile:
