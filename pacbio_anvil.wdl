@@ -42,6 +42,7 @@ task parse_tsv {
 
     output {
         Array[File] out_json = glob("*.json") 
+        File tables = "table_names.txt"
     }
     runtime {
         docker: "quay.io/biocontainers/pandas:2.2.1"
