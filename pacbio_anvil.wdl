@@ -19,26 +19,30 @@ workflow Test {
   call parse_tsv {
     input:
         table_names=table_names
+        tables=export_tables.tables
   }
 }
 
 task parse_tsv {
     input {
-        Array[String] table_names
+        Array[File] tables
     }
 
     command <<<
-    tables=~{sep="\n" table_names}
-    for table in ${tables}; do
-        echo "${table}" >> table_names.txt; done
+    table_paths=~{sep="\n" tables}
+    for path in ${table_paths}; do
+        echo "${path}" >> table_paths.txt; done
     python <<CODE
     import pandas as pd
-    with open("table_names.txt") as infile:
+    import os
+    with open("table_paths.txt") as infile:
         tables = infile.readlines()
         tables = [val.strip() for val in tables]
     for table in tables:
         df = pd.read_csv(table,sep="\t")
-        df.to_json(table+".json",orient="records")
+        fname = os.path.basename(table)
+        fname = fname.split(".tsv")[0]+".json"
+        df.to_json(fname,orient="records")
     CODE
     >>>
 
