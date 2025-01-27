@@ -18,7 +18,6 @@ workflow Test {
 
   call parse_tsv {
     input:
-        table_names=table_names
         tables=export_tables.tables
   }
 }
