@@ -28,7 +28,7 @@ task parse_tsv {
     }
 
     command <<<
-    table_paths=~{sep="\n" tables}
+    table_paths="~{sep='\n' tables}"
     for path in ${table_paths}; do
         echo "${path}" >> table_paths.txt; done
     python <<CODE
