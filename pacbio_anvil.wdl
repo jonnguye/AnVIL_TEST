@@ -28,8 +28,9 @@ task parse_tsv {
     }
 
     command <<<
-    for table_name in ~{sep="\n" table_names}; do
-        echo "${table_name}" >> table_names.txt; done
+    tables=~{sep="\n" table_names}
+    for table in ${tables}; do
+        echo "${table}" >> table_names.txt; done
     python <<CODE
     import pandas as pd
     with open("table_names.txt") as infile:
