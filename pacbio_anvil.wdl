@@ -6,6 +6,7 @@ workflow Test {
     String model_url
     String workspace_name
     String workspace_namespace
+    String out_prefix
   }
 
   call export_tables{
@@ -24,19 +25,25 @@ workflow Test {
 
 task parse_tsv {
     input {
-        File aligned_nanopore 
+        Array[String] table_names
+        String out_prefix
     }
 
-    command {
+    command <<<
+    ~{sep("\n", table_names)} > table_names.txt
     python <<CODE
     import pandas as pd
-    df = pd.read_csv("${aligned_nanopore}",sep="\t")
-    df.to_json("nanopore.json",orient="records")
+    with open(table_names.txt) as infile:
+        tables = infile.readlines()
+        tables = [val.strip() for val in tables]
+    for table in tables:
+        df = pd.read_csv(table,sep="\t")
+        df.to_json(table+".json",orient="records")
     CODE
-    }
+    >>>
 
     output {
-        File nanopore_json = "nanopore.json"
+        File out_json = "~{out_prefix}.json"
     }
     runtime {
         docker: "quay.io/biocontainers/pandas:2.2.1"
