@@ -18,25 +18,35 @@ workflow Test {
 
   call parse_tsv {
     input:
-        aligned_nanopore=export_tables.aligned_nanopore
+        tables=export_tables.tables
   }
 }
 
 task parse_tsv {
     input {
-        File aligned_nanopore 
+        Array[File] tables
     }
 
-    command {
+    command <<<
+    table_paths="~{sep='\n' tables}"
+    for path in ${table_paths}; do
+        echo "${path}" >> table_paths.txt; done
     python <<CODE
     import pandas as pd
-    df = pd.read_csv("${aligned_nanopore}",sep="\t")
-    df.to_json("nanopore.json",orient="records")
+    import os
+    with open("table_paths.txt") as infile:
+        tables = infile.readlines()
+        tables = [val.strip() for val in tables]
+    for table in tables:
+        df = pd.read_csv(table,sep="\t")
+        fname = os.path.basename(table)
+        fname = fname.split(".tsv")[0]+".json"
+        df.to_json(fname,orient="records")
     CODE
-    }
+    >>>
 
     output {
-        File nanopore_json = "nanopore.json"
+        Array[File] out_json = glob("*.json") 
     }
     runtime {
         docker: "quay.io/biocontainers/pandas:2.2.1"
